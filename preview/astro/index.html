@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grok Bot 中文指南 · Astro 预览</title>
+<style>
+:root { --bg: #fafafa; --card: #ffffff; --text: #1a1a1a; --muted: #666; --border: #e5e5e5; --accent: #0070f3; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.layout { display: flex; max-width: 1200px; margin: 0 auto; }
+.sidebar { width: 240px; position: sticky; top: 0; height: 100vh; padding: 2rem 1.5rem; border-right: 1px solid var(--border); background: #fff; }
+.sidebar h2 { font-size: 0.875rem; text-transform: uppercase; color: var(--muted); margin: 0 0 1rem; }
+.sidebar a { display: block; padding: 0.4rem 0; color: var(--text); text-decoration: none; font-size: 0.95rem; }
+.sidebar a:hover { color: var(--accent); }
+main { flex: 1; padding: 2rem 3rem; }
+header h1 { font-size: 2.25rem; margin: 0 0 0.5rem; }
+.subtitle { color: var(--muted); margin: 0 0 2rem; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.card h3 { margin-top: 0; }
+pre { background: #f4f4f5; padding: 1rem; border-radius: 8px; overflow-x: auto; position: relative; }
+.copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem 0.6rem; font-size: 0.75rem; cursor: pointer; }
+@media (max-width: 800px) { .layout { flex-direction: column; } .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); } }
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="sidebar">
+    <h2>目录</h2>
+    <a href="#intro">前言</a>
+    <a href="#principle">核心原则</a>
+    <a href="#capabilities">连接器与 Skills</a>
+    <a href="#cases">实操测试</a>
+  </nav>
+  <main>
+    <header>
+      <h1>Grok Bot 中文指南</h1>
+      <p class="subtitle">现代卡片文档风 · Astro 版预览</p>
+    </header>
+    <section id="intro">
+      <h2>前言</h2>
+      <div class="card"><p>把 learngrok.dev 与 grokbot.dev 的核心内容整理成中文。强调「把工作交给 Bot，而不是反复提问」，并按清晰模块组织。</p></div>
+    </section>
+    <section id="principle">
+      <h2>核心原则</h2>
+      <div class="card"><h3>Give a Bot the job, not the question</h3><p>清晰的岗位描述比临时提示更重要。把长期规则写进 Bot 描述。</p></div>
+      <div class="card"><h3>一个 Bot 一个岗位 + 先验证再自动化</h3><p>先搜索现有 Bot。流程做对后再保存为 Skill，稳定后再挂例程。</p></div>
+    </section>
+    <section id="capabilities">
+      <h2>连接器与 Skills</h2>
+      <div class="card"><p>优先使用连接器。Skill 应写明：何时使用、输入、步骤、如何验证、输出格式、哪些动作必须审批。</p></div>
+    </section>
+    <section id="cases">
+      <h2>实操测试</h2>
+      <div class="card">
+        <h3>测试：先搜索再设置例程</h3>
+        <pre>先搜索是否已有适合做每日邮件摘要的 Bot。如果有就用它；没有再建议。然后让它保存例程：每个工作日 8:30 生成最多 5 条未读邮件摘要。无新邮件时回复「今日无新邮件」。不要发送任何邮件。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
+      </div>
+    </section>
+  </main>
+</div>
+<script>
+function copyText(btn) {
+  const pre = btn.parentElement;
+  const text = pre.innerText.replace('复制', '').trim();
+  navigator.clipboard.writeText(text);
+  btn.textContent = '已复制';
+  setTimeout(() => btn.textContent = '复制', 1500);
+}
+</script>
+</body>
+</html>
