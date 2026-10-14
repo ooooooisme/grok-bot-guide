@@ -181,6 +181,8 @@ a:hover { text-decoration: underline; }
     <a href="#routine">例程机制</a>
     <a href="#env">执行环境</a>
     <a href="#flow">正确交互流程</a>
+    <a href="#advanced">进阶机制</a>
+    <a href="#casestudy">社区案例</a>
     <a href="#cases">实操案例</a>
     <a href="#lab1">案例 1：创建与记忆</a>
     <a href="#lab2">案例 2：设置例程</a>
@@ -291,6 +293,71 @@ a:hover { text-decoration: underline; }
           <li><strong>明确例程</strong>：长期任务要明确要求保存例程，并写清触发条件和完整提示</li>
         </ol>
         <p>如果多个 Bot 都可能承担一项持续性职责，应先询问你的选择，而不是自行决定。</p>
+      </div>
+    </section>
+
+    
+    <section id="advanced">
+      <h2>进阶机制</h2>
+      <div class="card">
+        <h3>Skill 与 Routine 的区别</h3>
+        <p><strong>Skill</strong> 是「怎么做」：可复用的步骤、输入、校验方式、输出格式和审批边界。<br>
+        <strong>Routine</strong> 是「什么时候做」：把一个已验证的 Skill 或流程绑定到时间或事件触发上。</p>
+        <p>正确顺序：先在对话里把任务做对 → 明确要求保存为 Skill → 再创建 Routine。不要直接把未验证的流程设成定时任务。</p>
+      </div>
+      <div class="card">
+        <h3>四要素框架（社区常用）</h3>
+        <ul>
+          <li><strong>Context</strong>：你是谁、业务目标、语气、硬性约束</li>
+          <li><strong>Connections</strong>：能读写的工具（邮件、日历、表格、GitHub 等）</li>
+          <li><strong>Capabilities</strong>：固化的 Skill / SOP</li>
+          <li><strong>Cadence</strong>：例程的触发频率与条件</li>
+        </ul>
+        <p>缺少任何一个，系统都容易变成「能聊但做不好」。来源：Nate Herk 等社区实践总结。</p>
+      </div>
+      <div class="card">
+        <h3>审批边界与成本控制</h3>
+        <p>社区高频建议：</p>
+        <ul>
+          <li>发送、支付、删除、发布、改生产系统前必须停下来等人确认</li>
+          <li>例程不要设得太频繁（每小时或每天几次通常足够），高频例程可能快速消耗用量</li>
+          <li>一个 Bot 最多约 50 个例程，删除后不可恢复</li>
+          <li>隐藏 Bot 不会停止它的例程</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="casestudy">
+      <h2>社区案例研究</h2>
+
+      <div class="card">
+        <h3>案例 A：一人公司 8 Agent + 11 Routine</h3>
+        <p>来源：solopreneur 实践分享。做法是每个角色一个 Bot（CMO、CFO、设计师、分析师等），先建 Chief of Staff，再逐步加专家。每个重复任务单独绑定到对应 Bot 的例程上，而不是全部堆在一个对话里。</p>
+        <p><strong>可借鉴点</strong>：先有一个总控，再按职责拆分；工具逐步连接，而不是一次接完。</p>
+      </div>
+
+      <div class="card">
+        <h3>案例 B：产品经理 Swarm（7 Bot）</h3>
+        <p>来源：Product Compass 分享。包含研究、策略、营销、设计、规格、工程 + 产品负责人。每周例程让研究 Bot 扫描竞品定价、Changelog 和社交动态，有变化才汇报，否则直接结束。</p>
+        <p><strong>可借鉴点</strong>：共享一个协作 Skill，让 Bot 之间知道如何交接；例程要有「无变化则停止」的退出条件。</p>
+      </div>
+
+      <div class="card">
+        <h3>案例 C：Chief of Staff 作为唯一入口</h3>
+        <p>多位用户（包括 20+ 和 29 个 Bot 的配置）的共同模式：日常只和 Chief of Staff 对话。它的描述里写明「先检查是否有专家 Bot 负责，再决定自己做还是转交」。每周固定 15 分钟回顾：它学到了什么、哪些地方被纠正过两次、哪些例程该关掉。</p>
+        <p><strong>可借鉴点</strong>：把「先委托再执行」写进描述；定期审计例程和记忆。</p>
+      </div>
+
+      <div class="card">
+        <h3>案例 D：Outer Loop / Inner Loop</h3>
+        <p>Outer Loop Bot 只做调研和整理上下文，产出一份自包含的任务说明；Inner Loop Bot 只执行，不自己再去探索。适用于编码、复杂调研等需要清晰分工的场景。</p>
+        <p><strong>可借鉴点</strong>：把「理解问题」和「执行动作」拆开，减少上下文污染。</p>
+      </div>
+
+      <div class="card">
+        <h3>案例 E：真实生活系统（多领域 Bot）</h3>
+        <p>社区用户公开的配置包括：礼物清单与预算、行程比较、车辆保养记录、发票草稿、学习资料生成、周末活动推荐、家居维护日志、邮件待办提取到提醒事项等。每个领域一个 Bot，例程按需触发，写操作都留审批。</p>
+        <p><strong>可借鉴点</strong>：从高频、低风险、可验证的小事开始，成功后再扩大范围。</p>
       </div>
     </section>
 
