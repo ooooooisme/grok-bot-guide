@@ -3,23 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grok Bot 中文指南 · Astro 预览</title>
+<title>Grok Bot 中文指南 · Astro 增强版</title>
 <style>
 :root { --bg: #fafafa; --card: #ffffff; --text: #1a1a1a; --muted: #666; --border: #e5e5e5; --accent: #0070f3; }
 * { box-sizing: border-box; }
 body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
 .layout { display: flex; max-width: 1200px; margin: 0 auto; }
-.sidebar { width: 240px; position: sticky; top: 0; height: 100vh; padding: 2rem 1.5rem; border-right: 1px solid var(--border); background: #fff; }
+.sidebar { width: 240px; position: sticky; top: 0; height: 100vh; padding: 2rem 1.5rem; border-right: 1px solid var(--border); background: #fff; transition: transform 0.3s; }
 .sidebar h2 { font-size: 0.875rem; text-transform: uppercase; color: var(--muted); margin: 0 0 1rem; }
-.sidebar a { display: block; padding: 0.4rem 0; color: var(--text); text-decoration: none; font-size: 0.95rem; }
+.sidebar a { display: block; padding: 0.4rem 0; color: var(--text); text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
 .sidebar a:hover { color: var(--accent); }
 main { flex: 1; padding: 2rem 3rem; }
-header h1 { font-size: 2.25rem; margin: 0 0 0.5rem; }
+header h1 { font-size: 2.25rem; margin: 0 0 0.5rem; animation: fadeIn 0.6s ease; }
 .subtitle { color: var(--muted); margin: 0 0 2rem; }
-.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: transform 0.2s, box-shadow 0.2s; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 .card h3 { margin-top: 0; }
 pre { background: #f4f4f5; padding: 1rem; border-radius: 8px; overflow-x: auto; position: relative; }
-.copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem 0.6rem; font-size: 0.75rem; cursor: pointer; }
+.copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem 0.6rem; font-size: 0.75rem; cursor: pointer; transition: background 0.2s; }
+.copy-btn:hover { background: #f0f0f0; }
+.counter { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; }
+.counter button { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 0.3rem 0.8rem; cursor: pointer; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (max-width: 800px) { .layout { flex-direction: column; } .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); } }
 </style>
 </head>
@@ -35,11 +40,18 @@ pre { background: #f4f4f5; padding: 1rem; border-radius: 8px; overflow-x: auto; 
   <main>
     <header>
       <h1>Grok Bot 中文指南</h1>
-      <p class="subtitle">现代卡片文档风 · Astro 版预览</p>
+      <p class="subtitle">现代卡片文档风 · Astro 增强版（含交互）</p>
     </header>
     <section id="intro">
       <h2>前言</h2>
-      <div class="card"><p>把 learngrok.dev 与 grokbot.dev 的核心内容整理成中文。强调「把工作交给 Bot，而不是反复提问」，并按清晰模块组织。</p></div>
+      <div class="card">
+        <p>把 learngrok.dev 与 grokbot.dev 的核心内容整理成中文。强调「把工作交给 Bot，而不是反复提问」，并按清晰模块组织。</p>
+        <div class="counter">
+          <span>阅读次数：</span>
+          <span id="count">0</span>
+          <button onclick="inc()">+1</button>
+        </div>
+      </div>
     </section>
     <section id="principle">
       <h2>核心原则</h2>
@@ -66,6 +78,10 @@ function copyText(btn) {
   navigator.clipboard.writeText(text);
   btn.textContent = '已复制';
   setTimeout(() => btn.textContent = '复制', 1500);
+}
+function inc() {
+  const el = document.getElementById('count');
+  el.textContent = parseInt(el.textContent) + 1;
 }
 </script>
 </body>
