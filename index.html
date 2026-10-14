@@ -176,283 +176,157 @@ a:hover { text-decoration: underline; }
   <nav class="sidebar">
     <h2>目录</h2>
     <a href="#intro">前言</a>
-    <a href="#principle">核心原理（详细）</a>
-    <a href="#capabilities">连接器、插件与 Skills（详细）</a>
-    <a href="#routine">例程机制（详细）</a>
-    <a href="#flow">正确交互流程（详细）</a>
-    <a href="#advanced">进阶机制（详细）</a>
-    <a href="#casestudy">社区案例研究（含步骤分析）</a>
+    <a href="#principle">核心原则</a>
+    <a href="#capabilities">连接器、插件与 Skills</a>
+    <a href="#routine">例程与自动化</a>
+    <a href="#flow">正确交互流程</a>
+    <a href="#advanced">进阶模式</a>
+    <a href="#casestudy">社区案例</a>
     <a href="#cases">复杂实操测试</a>
     <a href="#multisource">多社区资料</a>
-    <a href="#sources">来源与社区</a>
+    <a href="#sources">来源</a>
     <a href="#summary">总结</a>
   </nav>
   <main>
     <header>
       <h1>Grok Bot 深度使用指南</h1>
-      <p class="subtitle">每项详细讲解 · 案例含步骤原因与目的 · 复杂测试场景</p>
+      <p class="subtitle">Give a Bot the job, not the question · 先原理再实操</p>
     </header>
 
     <section id="intro">
       <h2>前言</h2>
-      <p>本版指南把每个主要分类写成可独立阅读的详细教程，而不是简短条目。阅读时请注意区分三层：原理（为什么这样设计）、操作（具体怎么做）、验证（如何确认做对了）。</p>
-      <p>社区经验表明，多数失败不是因为功能不存在，而是因为顺序错了、边界没写清、或者把未验证的流程直接自动化。因此本指南特别强调「先验证再固化，再自动化」的顺序。</p>
+      <p>借鉴 learngrok.dev 与 grokbot.dev 的组织方式：以「把工作交给 Bot」为核心，而不是反复提问。本指南把每个主题写成可独立阅读的详细说明，并配有可复制的测试场景。</p>
+      <p>核心顺序始终是：先搜索现有 Bot → 验证流程 → 保存为 Skill → 再挂例程。未验证的流程不要直接自动化。</p>
     </section>
 
     <section id="principle">
-      <h2>核心原理（详细教程）</h2>
+      <h2>核心原则</h2>
       <div class="card">
-        <h3>1. Bot 与普通对话的本质区别</h3>
-        <p>普通对话是无状态或弱状态的。每次新开窗口，上下文基本从零开始。Grok Bot 则是长期存在的代理：它有名称、职责描述、独立对话历史、长期记忆，并且运行在一台共享的云电脑上。</p>
-        <p>这台云电脑有浏览器、文件系统和终端。浏览器的登录会话可以跨任务保留。文件可以跨对话存在。工作可以在你关闭设备后继续。官方把它描述为「有自己电脑的队友」，社区用户常用「员工」或「助理团队」来理解。</p>
-        <p>为什么这很重要：很多任务不是「问一次就结束」，而是需要记住上次的状态、继续处理文件、或在特定时间主动检查。普通对话做不到这些，Bot 可以。</p>
-        <p>常见误区：以为 Bot 只是「能记住东西的聊天」。实际上它还拥有执行环境。如果你需要操作本地文件、已登录网站或后台持续运行的任务，必须交给 Bot，而不是普通对话。</p>
+        <h3>Give a Bot the job, not the question</h3>
+        <p>learngrok.dev 反复强调这一点。普通对话是「问问题」，Bot 是「交办工作」。一个清晰的岗位描述比临时提示更重要。</p>
+        <p>好的岗位描述包含：职责范围、数据来源、输出格式、什么必须停下来等人确认。把长期规则写进 Bot 描述，而不是只放在聊天里。</p>
       </div>
       <div class="card">
-        <h3>2. 何时创建 Bot，何时直接对话</h3>
-        <p>判断标准可以具体化为三个问题：</p>
-        <ul>
-          <li>这件事是否需要记住上次的决定或状态？</li>
-          <li>这件事是否需要在我离开后继续执行？</li>
-          <li>这件事是否涉及我的文件、已登录浏览器或已连接的服务？</li>
-        </ul>
-        <p>如果三个问题都是「否」，直接对话更高效。如果有任何一个是「是」，就考虑 Bot。</p>
-        <p>社区高频建议是「一个 Bot 一个清晰的岗位」。岗位越清晰，记忆越不容易污染，例程越容易管理，出问题时也更容易定位。不要做一个「什么都能聊」的通用 Bot，然后把所有事情都丢给它。</p>
-        <p>实际操作时，先搜索现有 Bot。如果已有职责接近的，优先复用或调整描述，而不是新建。重复创建会导致维护成本上升，也容易出现职责重叠。</p>
+        <h3>一个 Bot 一个岗位</h3>
+        <p>社区和 grokbot.dev 的大量模板都遵循这个原则。职责越单一，记忆越干净，例程越容易管理。重复创建或职责重叠是常见问题。</p>
+        <p>先搜索现有 Bot。如果已有接近的，优先调整描述或复用，而不是新建。</p>
       </div>
       <div class="card">
-        <h3>3. 记忆机制的实际运作</h3>
-        <p>每个 Bot 有独立的长期记忆。它会保留你明确要求记住的事实、对话中的关键决定、偏好，以及已完成任务的状态。记忆不是无限的，重要信息最好明确告知。</p>
-        <p>敏感信息（密码、API 密钥、私人凭证）不要放进记忆。这些应通过官方连接器或安全方式处理。当事实发生变化时，要主动更新，而不是假设 Bot 会自动感知。</p>
-        <p>社区实用技巧：把长期有效的规则写进 Bot 的描述（profile）里，而不是只放在聊天记录中。聊天历史会变长，描述是相对稳定的锚点。复制 Bot 时会保留描述、Skills 和例程，但不会复制对话历史和学到的记忆，这在需要重置上下文时很有用。</p>
-        <p>定期审计记忆也很重要。可以问 Bot「你目前记住了哪些关键事实」，然后纠正过时或错误的内容。否则错误会在后续任务中被反复引用。</p>
+        <h3>记忆与执行环境</h3>
+        <p>每个 Bot 有独立长期记忆，并共享一台云电脑（浏览器、文件系统、终端）。登录会话可跨任务保留。敏感凭证不要放进记忆，走连接器。</p>
+        <p>复制 Bot 会保留描述、Skills 和例程，但不复制对话历史和学到的记忆，适合重置上下文时使用。</p>
       </div>
     </section>
 
     <section id="capabilities">
-      <h2>连接器、插件与 Skills（详细教程）</h2>
+      <h2>连接器、插件与 Skills</h2>
       <div class="card">
-        <h3>1. 连接器 / 插件是什么</h3>
-        <p>连接器（在界面里常叫插件）是 Bot 访问外部服务的结构化方式。在侧边栏的「Connect apps」里添加，完成一次 OAuth 登录后，账号内的所有 Bot 都可以使用。常见的有 Gmail、Google Calendar、GitHub、Notion、Slack 等。</p>
-        <p>为什么优先用连接器而不是浏览器点击：连接器提供稳定的结构化接口，不容易因为网页改版而失效。浏览器点击适合没有连接器的服务，或者需要视觉判断的操作，但稳定性较差。</p>
-        <p>添加后，在对话里用 <code>@</code> 可以明确引用某个连接器。安装是账号级的，不是单个 Bot 独占。</p>
+        <h3>连接器优先</h3>
+        <p>在「Connect apps」添加，一次登录后账号内所有 Bot 可用。优先使用连接器，比纯浏览器点击更稳定。用 <code>@</code> 引用连接器，用 <code>/</code> 引用 Skill。</p>
+        <p>没有连接器的服务仍可通过共享电脑的浏览器操作，但需要先登录一次。</p>
       </div>
       <div class="card">
-        <h3>2. Skills 的设计原则</h3>
-        <p>Skill 是可复用的「怎么做」。一个完整的 Skill 应包含：</p>
-        <ul>
-          <li>什么情况下使用它</li>
-          <li>需要哪些输入和权限</li>
-          <li>具体步骤</li>
-          <li>如何验证结果是否正确</li>
-          <li>返回什么格式</li>
-          <li>哪些动作必须停下来等人确认</li>
-        </ul>
-        <p>Skills 存在私有库里，可以在多个 Bot 之间共享（前提是 Bot 有相应的连接器或登录状态）。在对话里用 <code>/</code> 可以引用已保存的 Skill。</p>
-        <p>正确建立顺序：先在对话里把流程做对 → 明确要求保存为 Skill，并补充边界和校验规则 → 在安全输入上测试 → 确认稳定后再考虑挂到例程上。</p>
+        <h3>Skill 的完整结构</h3>
+        <p>一个可用的 Skill 应写明：何时使用、需要哪些输入与权限、步骤、如何验证结果、输出格式、哪些动作必须审批。</p>
+        <p>正确顺序：先在对话里做对 → 明确要求保存为 Skill 并补充边界 → 在安全输入上测试 → 稳定后再考虑例程。</p>
       </div>
       <div class="card">
-        <h3>3. Teach a Task 的用法与限制</h3>
-        <p>在支持的环境里，可以让 Bot 观察你完成一次浏览器流程（最长约 10 分钟），它会生成一个 Skill 草稿。适合重复性强、规则清晰、错误成本低的操作。</p>
-        <p>生成的只是草稿。你需要手动补充决策规则、失败处理方式和审批边界。不要在演示中暴露密码。之后一定要在安全的测试输入上完整跑一遍，确认无误后再使用。</p>
-        <p>如果 Teach a Task 不可用，就用文字把步骤写清楚，然后明确要求保存为 Skill。</p>
+        <h3>Teach a Task</h3>
+        <p>观察你完成一次浏览器流程（约 10 分钟）后生成草稿。必须手动补充决策规则、失败处理和审批边界，并在测试输入上验证。不要在演示中暴露密码。</p>
       </div>
     </section>
 
     <section id="routine">
-      <h2>例程机制（详细教程）</h2>
+      <h2>例程与自动化</h2>
       <div class="card">
-        <h3>例程的完整组成</h3>
-        <p>一个可用的例程至少包含：负责的 Bot、触发条件（时间或支持的事件）、要执行的流程、输入来源、期望输出、审批边界、无数据或失败时的处理方式。</p>
-        <p>时间触发例子：「每个工作日早上 8 点」。事件触发例子：「当 GitHub 有新的 Pull Request 时」（需要相应集成支持）。事件触发的匹配规则要尽量窄，否则容易产生大量噪音。</p>
-        <p>好的例程提示必须自包含，因为执行时你不在旁边解释。要写明从哪里拿数据、怎么处理、输出什么格式、如果数据缺失或过期怎么办、哪些动作必须停下来等人确认。</p>
-      </div>
-      <div class="card">
-        <h3>限制与最佳实践</h3>
-        <p>单个 Bot 最多约 50 个例程；计划间隔至少 5 分钟；系统保留最近约 20 条运行记录；删除后不可恢复。隐藏 Bot 并不会停止它的例程，必须主动暂停或删除。</p>
-        <p>建议先用「Test run」在安全输入上验证，再正式启用。高频例程会快速消耗用量，社区普遍建议从每天几次或每小时一次开始，而不是更密。定期审计：哪些例程还在产生价值，哪些可以关掉。</p>
+        <p>例程 = 负责的 Bot + 触发条件 + 已验证的流程。提示必须自包含：数据来源、处理逻辑、输出格式、无数据时怎么办、哪些动作必须停下来确认。</p>
+        <p>限制参考：单 Bot 最多约 50 个例程；间隔至少 5 分钟；保留最近约 20 条记录；删除不可恢复。隐藏 Bot 不会停止例程。</p>
+        <p>先用 Test run 验证，再正式启用。高频例程会快速消耗用量。定期审计哪些还在产生价值。</p>
       </div>
     </section>
 
     <section id="flow">
-      <h2>正确交互流程（详细）</h2>
+      <h2>正确交互流程</h2>
       <div class="card">
         <ol>
-          <li><strong>先搜索</strong>：分配任务前先搜索现有 Bot。目的是避免重复创建，减少职责重叠。</li>
-          <li><strong>异步发送并持续等待</strong>：必须使用异步模式，获得句柄后持续等待最终结果。目的是确保拿到真正的输出，而不是只看到确认。</li>
-          <li><strong>把成功流程保存为 Skill</strong>：流程验证通过后明确要求保存，并补充边界。目的是让后续可以复用，而不是每次重新描述。</li>
-          <li><strong>需要自动化时再创建例程</strong>：写清触发、输入、失败处理和审批。目的是让任务在你不在时可靠运行。</li>
-          <li><strong>多 Bot 可能承担同一职责时先询问</strong>：列出候选让你选择。目的是避免系统自行决定导致混乱。</li>
+          <li>先搜索现有 Bot，避免重复创建。</li>
+          <li>异步发送并持续等待最终结果。</li>
+          <li>流程验证通过后保存为 Skill。</li>
+          <li>需要自动化时再创建例程，并写清失败处理与审批。</li>
+          <li>多个 Bot 可能承担同一职责时，先列出候选让你选择。</li>
         </ol>
       </div>
     </section>
 
     <section id="advanced">
-      <h2>进阶机制（详细）</h2>
+      <h2>进阶模式</h2>
       <div class="card">
-        <h3>四要素框架</h3>
-        <p>Context（你是谁与约束）、Connections（可靠的工具访问）、Capabilities（已验证的 Skills）、Cadence（例程节奏）。缺少任何一个都容易出现「能聊但做不好」或「经常出错还浪费用量」。</p>
+        <h3>四要素</h3>
+        <p>Context（你是谁与约束）、Connections（可靠工具访问）、Capabilities（已验证 Skills）、Cadence（例程节奏）。缺一不可。</p>
       </div>
       <div class="card">
-        <h3>审批边界与成本控制</h3>
-        <p>发送、支付、删除、发布、改生产系统等动作必须在 Skill 和例程里明确要求停下来确认。高频例程会快速消耗用量。每周短回顾（哪些学到了、哪些被纠正过两次、哪些例程该关）是多个用户验证过的有效做法。</p>
+        <h3>Chief of Staff 作为唯一入口</h3>
+        <p>日常只和总控对话。描述里写明「先检查专家再决定自己做还是转交」。每周短回顾：学到了什么、被纠正过两次的地方、哪些例程该关。</p>
       </div>
       <div class="card">
-        <h3>多 Bot 协作模式</h3>
-        <p>Chief of Staff 作为唯一入口：日常只和它对话，它负责判断该转给哪个专家。Outer Loop / Inner Loop：一个只做调研并产出自包含任务说明，另一个只执行。两种方式都能减少上下文污染。</p>
+        <h3>Outer / Inner Loop</h3>
+        <p>一个 Bot 只做调研并产出自包含任务说明，另一个只执行。减少上下文污染。</p>
       </div>
     </section>
 
     <section id="casestudy">
-      <h2>社区案例研究（含步骤原因与目的）</h2>
+      <h2>社区案例</h2>
       <div class="card">
-        <h3>案例 A：一人公司 8 Agent + 11 Routine</h3>
-        <p><strong>步骤 1</strong>：先创建 Chief of Staff。目的：建立一个统一入口，避免你直接管理多个 Bot。</p>
-        <p><strong>步骤 2</strong>：按角色逐步添加专家 Bot（CMO、CFO 等）。目的：每个 Bot 职责单一，记忆和例程更容易维护。</p>
-        <p><strong>步骤 3</strong>：每个重复任务单独绑定到对应 Bot 的例程。目的：失败时容易定位，也方便单独暂停。</p>
-        <p><strong>步骤 4</strong>：工具逐步连接，而不是一次接完。目的：降低初期复杂度，先验证核心流程。</p>
-        <p>可借鉴：先有总控，再按职责拆分；从小事开始验证。</p>
+        <h3>一人公司多 Agent</h3>
+        <p>先建 Chief of Staff，再按角色逐步添加专家。每个重复任务单独绑定例程。工具逐步连接。</p>
       </div>
       <div class="card">
-        <h3>案例 B：产品经理 Swarm</h3>
-        <p><strong>步骤 1</strong>：建立研究、策略、营销等 7 个 Bot + 产品负责人。目的：覆盖产品工作的不同环节。</p>
-        <p><strong>步骤 2</strong>：共享一个协作 Skill。目的：让 Bot 之间知道如何交接，减少重复沟通。</p>
-        <p><strong>步骤 3</strong>：研究 Bot 的每周例程设「无变化则停止」。目的：避免无用输出，节省用量。</p>
-        <p>可借鉴：共享协作规则 + 明确退出条件。</p>
+        <h3>产品 Swarm</h3>
+        <p>多个岗位 Bot + 共享协作 Skill。研究例程设「无变化则停止」。</p>
       </div>
       <div class="card">
-        <h3>案例 C：Chief of Staff 作为唯一入口</h3>
-        <p><strong>步骤 1</strong>：在描述里写明「先检查专家再决定自己做还是转交」。目的：强制委托优先，避免总控自己包揽一切。</p>
-        <p><strong>步骤 2</strong>：每周固定短时间回顾。目的：审计学习、纠正和例程价值，防止系统膨胀。</p>
-        <p>可借鉴：把委托规则写进描述，并定期审计。</p>
+        <h3>小红书工作流（国内）</h3>
+        <p>总助 + 情报 + 运营 + 美工。强调「源文从我来、数字从报告来、发布我点」三道硬门。只对总助说话。</p>
       </div>
     </section>
 
     <section id="cases">
       <h2>复杂实操测试</h2>
-      <p>以下测试比入门案例更接近真实场景。每个测试都要求你观察中间步骤，而不是只看最终结果。</p>
-
       <div class="card">
-        <h3>测试 1：多步骤记忆与更新</h3>
-        <p>目的：验证 Bot 能记住、调用并更新长期事实。</p>
-        <div class="try">
-          <strong>步骤 A：</strong>
-          <pre>请创建一个 Bot 叫「项目助理」，描述为「负责跟踪我的香港公司相关事项」。然后让它记住：我目前在规划用公司名义购买一处物业，价值约 1 亿，主要考虑税与按揭结构。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
-        </div>
-        <div class="try">
-          <strong>步骤 B：</strong>
-          <pre>过一会儿问它：「关于香港公司买物业这件事，你目前记得哪些关键信息？」观察是否准确。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
-        </div>
-        <div class="try">
-          <strong>步骤 C：</strong>
-          <pre>然后说：「更新记忆：物业价值调整为 8000 万，并且目前不考虑出租。」再问一次它记得什么，确认已更新。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
-        </div>
+        <h3>测试 1：记忆与更新</h3>
+        <div class="try"><pre>请创建「项目助理」，记住：我在规划用香港公司名义购买物业，价值约 1 亿，主要考虑税与按揭。之后问它记得什么，再更新为 8000 万且不考虑出租，确认已更新。<button class="copy-btn" onclick="copyText(this)">复制</button></pre></div>
       </div>
-
       <div class="card">
-        <h3>测试 2：先搜索再分配 + 复杂例程</h3>
-        <p>目的：验证搜索优先，并设置一个带失败处理的例程。</p>
-        <div class="try">
-          <strong>步骤 A：</strong>
-          <pre>请先搜索现有 Bot，看有没有适合做「每日邮件摘要」的。如果有就用它；如果没有，再建议是否新建。把候选和理由告诉我。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
-        </div>
-        <div class="try">
-          <strong>步骤 B：</strong>
-          <pre>如果决定用某个 Bot，请让它保存一个例程：每个工作日早上 8:30，检查未读邮件，生成最多 5 条摘要（包含发件人、主题、一句话要点）。如果没有新邮件，回复「今日无新邮件」。如果服务未连接，明确报告需要授权什么，而不是假装完成。不要发送任何邮件。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
-        </div>
-        <p>观察：是否先搜索、例程提示是否自包含、失败处理是否写明。</p>
+        <h3>测试 2：先搜索 + 带失败处理的例程</h3>
+        <div class="try"><pre>先搜索是否已有适合做每日邮件摘要的 Bot。如果有就用它；没有再建议。然后让它保存例程：每个工作日 8:30 生成最多 5 条未读邮件摘要。无新邮件时回复「今日无新邮件」。服务未连接时明确报告需要授权什么。不要发送任何邮件。<button class="copy-btn" onclick="copyText(this)">复制</button></pre></div>
       </div>
-
       <div class="card">
-        <h3>测试 3：电脑操作 + 安全边界</h3>
-        <p>目的：确认 Bot 在你的电脑上操作，同时遵守「只读」边界。</p>
-        <div class="try">
-          <strong>测试提示：</strong>
-          <pre>请让拥有电脑的 Bot 做以下事情：1）列出下载文件夹里最近 10 个文件的名称和修改时间（如果有）；2）如果有 PDF 或表格，只报告文件名，不要打开或修改；3）不要移动、删除或重命名任何文件。完成后说明你实际做了哪些操作，以及有没有遇到权限问题。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
-        </div>
-        <p>观察：是否真的返回了你电脑上的文件信息，是否严格遵守只读要求。</p>
-      </div>
-
-      <div class="card">
-        <h3>测试 4：Skill 固化后再自动化</h3>
-        <p>目的：体验「先验证流程，再保存 Skill，再考虑例程」的完整顺序。</p>
-        <div class="try">
-          <strong>步骤 A：</strong>
-          <pre>请帮我设计一个简单的「每日待办摘要」流程：从我已连接的日历或邮件中提取今天需要处理的事项，整理成 3-5 条，每条包含来源和优先级。先在对话里跑一次，不要保存。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
-        </div>
-        <div class="try">
-          <strong>步骤 B：</strong>
-          <pre>如果这次结果满意，请把刚才的流程保存为一个 Skill，名称叫「每日待办摘要」。Skill 里必须包含：数据来源、输出格式、如果没有事项时怎么回复、以及「不要自动发送任何消息」的规则。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
-        </div>
-        <div class="try">
-          <strong>步骤 C：</strong>
-          <pre>然后再问我是否要把这个 Skill 挂到例程上。如果我同意，再创建「每个工作日早上 8 点运行」的例程。在我同意之前不要创建例程。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
-        </div>
-        <p>观察：是否严格按顺序执行，是否在保存 Skill 前先验证，是否在创建例程前征求同意。</p>
+        <h3>测试 3：先验证再固化</h3>
+        <div class="try"><pre>先在对话里跑一次「每日待办摘要」（从日历或邮件提取今天事项，3-5 条）。满意后再保存为 Skill，包含数据来源、输出格式、无事项时怎么回复、以及不要自动发送的规则。在我同意之前不要创建例程。<button class="copy-btn" onclick="copyText(this)">复制</button></pre></div>
       </div>
     </section>
 
-    
     <section id="multisource">
-      <h2>多社区资料汇总</h2>
+      <h2>多社区资料</h2>
       <div class="card">
-        <h3>GitHub 资源</h3>
-        <ul>
-          <li><strong>Awesome Grok Bot 列表</strong>：多个仓库整理了 60+ Skills、插件、MCP 服务器和模板（如 ZeroPointRepo/awesome-grok-bot、mergisi/awesome-grokbot、doanbactam/awesome-grok-bots）。</li>
-          <li><strong>可直接使用的模板</strong>：Chief of Staff 描述、Ops Graph、Team Builder Skill、日常摘要、邮件分类等现成 PROFILE 和 SETUP 文件。</li>
-          <li><strong>官方插件市场</strong>：xai-org/plugin-marketplace 定义了 .grok-plugin 格式。</li>
-        </ul>
-        <p>实用价值：可以直接复制成熟的 Bot 描述和 Skill 结构，而不是从零写。</p>
-      </div>
-      <div class="card">
-        <h3>Reddit（r/GrokBot 等）</h3>
-        <ul>
-          <li>用户分享了 11 Agent 交易准备系统、6 个研究 Agent 的真实使用反馈。</li>
-          <li>Grok Bot 专属邮箱（mail.grokbot.com）上线后的使用场景和用量讨论。</li>
-          <li>多 Agent 协作时的质量波动、用量消耗、审批边界等实际问题。</li>
-          <li>有人用事件驱动而不是定时轮询来降低用量。</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>YouTube</h3>
-        <ul>
-          <li>官方工作坊（Grok Bot 101）：从创建到多 Bot 协作、Teach a Task、Chief of Staff 演示。</li>
-          <li>完整课程：How to Use Grok Bot Better Than 99% of People（7 个层级，从基础到团队）。</li>
-          <li>新手教程和实操案例：内容生成、线索收集、Notion 联动等。</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>国内社区（小红书 / 知乎 / 觉醒AI 等）</h3>
-        <ul>
-          <li>小红书工作流拆解：总助 + 情报 + 运营 + 美工的分工，强调「源文从我来、数字从报告来、发布我点」三道硬门。</li>
-          <li>闲鱼上架、小红书图文生成、短视频剪辑等具体岗位 Bot 案例。</li>
-          <li>中文教程：从安装到搭建团队、插件验证、提示词结构（目标 + 来源 + 限制 + 交付物 + 确认节点）。</li>
-          <li>强调「只对总助说话」，由总助分诊和收口。</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>跨社区共同模式</h3>
-        <ul>
-          <li>一个 Bot 一个清晰岗位，总控（Chief of Staff）作为唯一入口。</li>
-          <li>先验证流程 → 保存 Skill → 再挂例程，而不是直接自动化。</li>
-          <li>写操作必须审批；例程要有失败处理和退出条件。</li>
-          <li>优先用连接器，浏览器作为补充。</li>
-          <li>定期审计例程和记忆，避免系统膨胀和用量浪费。</li>
-        </ul>
+        <p><strong>GitHub</strong>：ZeroPointRepo/awesome-grok-bot、mergisi/awesome-grokbot 等 Awesome 列表，以及大量 Chief of Staff、Ops Graph 模板。</p>
+        <p><strong>Reddit r/GrokBot</strong>：真实多 Agent 配置、专属邮箱用法、用量与质量讨论。</p>
+        <p><strong>YouTube</strong>：官方 Grok Bot 101、完整 7 层级课程、新手实操。</p>
+        <p><strong>国内</strong>：觉醒AI 的小红书工作流拆解、闲鱼/图文岗位案例。</p>
+        <p>跨社区共同点：一个岗位一个 Bot、总控入口、先验证再自动化、写操作必须审批、定期审计。</p>
       </div>
     </section>
 
     <section id="sources">
-      <h2>信息来源与社区经验</h2>
+      <h2>来源</h2>
       <div class="card">
-        <p>平台内部机制 + 官方文档（docs.x.ai/grok-bot 相关页面）+ 社区实践（Sawyer Merritt 教程、@bot 团队 tips、solopreneur / Product Compass / Chief of Staff 模式等公开分享）。</p>
-        <p>高频技巧：一个 Bot 一个清晰岗位、总控协调、例程不要过频、Teach a Task 后完善 Skill、重要写操作留审批、定期审计例程和记忆。</p>
+        <p>平台机制 + 官方文档（docs.x.ai/grok-bot）+ learngrok.dev、grokbot.dev 的组织与内容模式 + 社区实践（Sawyer Merritt、@bot 团队 tips、solopreneur / Product Compass 等）。</p>
       </div>
     </section>
 
     <section id="summary">
       <h2>总结</h2>
-      <p>先建立清晰的能力层（连接器提供可靠访问，Skills 固化「怎么做」），再通过例程实现自动化。用复杂测试验证流程是否正确、边界是否被遵守。遇到具体问题时，把完整回复发回来即可继续调整。</p>
+      <p>把工作交给有清晰岗位的 Bot，而不是反复提问。先建立可靠的能力层（连接器 + Skill），再自动化。用复杂测试验证边界是否被遵守。</p>
     </section>
   </main>
 </div>
