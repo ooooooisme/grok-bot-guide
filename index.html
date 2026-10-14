@@ -106,6 +106,7 @@ a { color: var(--accent); }
     <a href="#lab5">案例 5：修改例程</a>
     <a href="#lab6">案例 6：服务集成</a>
     <a href="#tips">进阶与排查</a>
+    <a href="#sources">来源与社区</a>
     <a href="#summary">总结</a>
   </nav>
   <main>
@@ -291,6 +292,30 @@ a { color: var(--accent); }
           <li>定期清理不再需要的例程</li>
           <li>重要操作始终保留人工最终确认</li>
         </ul>
+      </div>
+    </section>
+
+    
+    <section id="sources">
+      <h2>信息来源与社区经验</h2>
+      <div class="card">
+        <h3>本指南的信息来源</h3>
+        <ul>
+          <li><strong>平台内部机制</strong>：来自实际调用 Grok Bot 工具时的规则（搜索优先、必须异步发送、持续等待、例程由提示+触发条件组成、共享云电脑等）。</li>
+          <li><strong>官方文档</strong>：<a href="https://docs.x.ai/grok-bot/overview" target="_blank">docs.x.ai/grok-bot</a> 与入门指南。</li>
+          <li><strong>社区实践</strong>：X 上 Sawyer Merritt 的 20 课教程、@bot 团队 power-user tips、Memory Map 等文章，以及真实用户的多 Bot 分工经验。</li>
+        </ul>
+        <h3>社区高频实用技巧（可直接借鉴）</h3>
+        <ul>
+          <li>每个 Bot 只负责一个清晰的「工作岗位」，而不是一个大而全的聊天。</li>
+          <li>设一个 Chief of Staff / 总控 Bot，负责协调其他专家 Bot。</li>
+          <li>例程不要跑得太频繁（每小时或每天几次通常足够），避免噪音。</li>
+          <li>用「Teach a Task」或明确要求保存 skill，把成功流程固化。</li>
+          <li>重要写操作（发邮件、改文件、花钱）保留人工确认。</li>
+          <li>定期让 Bot 列出例程和记忆，做一次清理。</li>
+          <li>把长期有效的事实写进 Bot 描述或明确要求记住，而不是只放在聊天里。</li>
+        </ul>
+        <p>这些技巧来自社区真实使用反馈，和平台机制相互印证，建议结合自己的场景选择性采用。</p>
       </div>
     </section>
 
