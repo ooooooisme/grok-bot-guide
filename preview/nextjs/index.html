@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grok Bot 中文指南 · Astro 预览</title>
+<title>Grok Bot 中文指南 · Next.js 增强版</title>
 <style>
 :root { --bg: #fafafa; --card: #ffffff; --text: #1a1a1a; --muted: #666; --border: #e5e5e5; --accent: #0070f3; }
 * { box-sizing: border-box; }
@@ -16,10 +16,17 @@ body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background:
 main { flex: 1; padding: 2rem 3rem; }
 header h1 { font-size: 2.25rem; margin: 0 0 0.5rem; }
 .subtitle { color: var(--muted); margin: 0 0 2rem; }
-.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: all 0.25s ease; }
+.card:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
 .card h3 { margin-top: 0; }
 pre { background: #f4f4f5; padding: 1rem; border-radius: 8px; overflow-x: auto; position: relative; }
 .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem 0.6rem; font-size: 0.75rem; cursor: pointer; }
+.tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.tabs button { padding: 0.4rem 1rem; border: 1px solid var(--border); background: #fff; border-radius: 6px; cursor: pointer; }
+.tabs button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: slide 0.3s ease; }
+@keyframes slide { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: none; } }
 @media (max-width: 800px) { .layout { flex-direction: column; } .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); } }
 </style>
 </head>
@@ -35,11 +42,20 @@ pre { background: #f4f4f5; padding: 1rem; border-radius: 8px; overflow-x: auto; 
   <main>
     <header>
       <h1>Grok Bot 中文指南</h1>
-      <p class="subtitle">现代卡片文档风 · Next.js 版预览</p>
+      <p class="subtitle">现代卡片文档风 · Next.js 增强版（含交互）</p>
     </header>
     <section id="intro">
       <h2>前言</h2>
-      <div class="card"><p>把 learngrok.dev 与 grokbot.dev 的核心内容整理成中文。强调「把工作交给 Bot，而不是反复提问」，并按清晰模块组织。</p></div>
+      <div class="card">
+        <div class="tabs">
+          <button class="active" onclick="showTab(0)">概述</button>
+          <button onclick="showTab(1)">来源</button>
+          <button onclick="showTab(2)">适用场景</button>
+        </div>
+        <div class="tab-content active" id="tab0"><p>把 learngrok.dev 与 grokbot.dev 的核心内容整理成中文。强调「把工作交给 Bot，而不是反复提问」。</p></div>
+        <div class="tab-content" id="tab1"><p>内容来自 learngrok.dev 的 Guides/Prompts 结构，以及 grokbot.dev 的模板分类思路。</p></div>
+        <div class="tab-content" id="tab2"><p>适合需要长期运行例程、多 Bot 协作、以及安全审批边界的使用场景。</p></div>
+      </div>
     </section>
     <section id="principle">
       <h2>核心原则</h2>
@@ -66,6 +82,10 @@ function copyText(btn) {
   navigator.clipboard.writeText(text);
   btn.textContent = '已复制';
   setTimeout(() => btn.textContent = '复制', 1500);
+}
+function showTab(i) {
+  document.querySelectorAll('.tabs button').forEach((b, idx) => b.classList.toggle('active', idx === i));
+  document.querySelectorAll('.tab-content').forEach((c, idx) => c.classList.toggle('active', idx === i));
 }
 </script>
 </body>
