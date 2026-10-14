@@ -183,6 +183,7 @@ a:hover { text-decoration: underline; }
     <a href="#advanced">进阶机制（详细）</a>
     <a href="#casestudy">社区案例研究（含步骤分析）</a>
     <a href="#cases">复杂实操测试</a>
+    <a href="#multisource">多社区资料</a>
     <a href="#sources">来源与社区</a>
     <a href="#summary">总结</a>
   </nav>
@@ -388,6 +389,56 @@ a:hover { text-decoration: underline; }
           <pre>然后再问我是否要把这个 Skill 挂到例程上。如果我同意，再创建「每个工作日早上 8 点运行」的例程。在我同意之前不要创建例程。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
         </div>
         <p>观察：是否严格按顺序执行，是否在保存 Skill 前先验证，是否在创建例程前征求同意。</p>
+      </div>
+    </section>
+
+    
+    <section id="multisource">
+      <h2>多社区资料汇总</h2>
+      <div class="card">
+        <h3>GitHub 资源</h3>
+        <ul>
+          <li><strong>Awesome Grok Bot 列表</strong>：多个仓库整理了 60+ Skills、插件、MCP 服务器和模板（如 ZeroPointRepo/awesome-grok-bot、mergisi/awesome-grokbot、doanbactam/awesome-grok-bots）。</li>
+          <li><strong>可直接使用的模板</strong>：Chief of Staff 描述、Ops Graph、Team Builder Skill、日常摘要、邮件分类等现成 PROFILE 和 SETUP 文件。</li>
+          <li><strong>官方插件市场</strong>：xai-org/plugin-marketplace 定义了 .grok-plugin 格式。</li>
+        </ul>
+        <p>实用价值：可以直接复制成熟的 Bot 描述和 Skill 结构，而不是从零写。</p>
+      </div>
+      <div class="card">
+        <h3>Reddit（r/GrokBot 等）</h3>
+        <ul>
+          <li>用户分享了 11 Agent 交易准备系统、6 个研究 Agent 的真实使用反馈。</li>
+          <li>Grok Bot 专属邮箱（mail.grokbot.com）上线后的使用场景和用量讨论。</li>
+          <li>多 Agent 协作时的质量波动、用量消耗、审批边界等实际问题。</li>
+          <li>有人用事件驱动而不是定时轮询来降低用量。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>YouTube</h3>
+        <ul>
+          <li>官方工作坊（Grok Bot 101）：从创建到多 Bot 协作、Teach a Task、Chief of Staff 演示。</li>
+          <li>完整课程：How to Use Grok Bot Better Than 99% of People（7 个层级，从基础到团队）。</li>
+          <li>新手教程和实操案例：内容生成、线索收集、Notion 联动等。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>国内社区（小红书 / 知乎 / 觉醒AI 等）</h3>
+        <ul>
+          <li>小红书工作流拆解：总助 + 情报 + 运营 + 美工的分工，强调「源文从我来、数字从报告来、发布我点」三道硬门。</li>
+          <li>闲鱼上架、小红书图文生成、短视频剪辑等具体岗位 Bot 案例。</li>
+          <li>中文教程：从安装到搭建团队、插件验证、提示词结构（目标 + 来源 + 限制 + 交付物 + 确认节点）。</li>
+          <li>强调「只对总助说话」，由总助分诊和收口。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>跨社区共同模式</h3>
+        <ul>
+          <li>一个 Bot 一个清晰岗位，总控（Chief of Staff）作为唯一入口。</li>
+          <li>先验证流程 → 保存 Skill → 再挂例程，而不是直接自动化。</li>
+          <li>写操作必须审批；例程要有失败处理和退出条件。</li>
+          <li>优先用连接器，浏览器作为补充。</li>
+          <li>定期审计例程和记忆，避免系统膨胀和用量浪费。</li>
+        </ul>
       </div>
     </section>
 
