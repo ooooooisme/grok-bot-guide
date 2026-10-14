@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grok Bot 实操指南 · 从入门到深入</title>
+<title>Grok Bot 使用指南 · 从原理到实操</title>
 <style>
 :root {
   --bg: #f8f9fa;
@@ -40,10 +40,7 @@ body {
   line-height: 1.7;
   font-size: 16px;
 }
-.layout {
-  display: flex;
-  min-height: 100vh;
-}
+.layout { display: flex; min-height: 100vh; }
 .sidebar {
   width: var(--sidebar-w);
   background: var(--card);
@@ -64,79 +61,28 @@ body {
   border-radius: 6px;
   font-size: 0.95rem;
 }
-.sidebar a:hover, .sidebar a.active {
-  background: var(--accent);
-  color: white;
-}
-.main {
-  flex: 1;
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
-}
-header {
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-}
+.sidebar a:hover, .sidebar a.active { background: var(--accent); color: white; }
+.main { flex: 1; max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+header { border-bottom: 1px solid var(--border); margin-bottom: 2rem; padding-bottom: 1rem; }
 h1 { font-size: 2rem; margin: 0 0 0.5rem; line-height: 1.2; }
 .subtitle { color: var(--muted); font-size: 1.1rem; }
 h2 { margin-top: 2.5rem; font-size: 1.6rem; border-bottom: 2px solid var(--accent); padding-bottom: 0.3rem; }
 h3 { margin-top: 1.8rem; font-size: 1.25rem; }
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.2rem 1.4rem;
-  margin: 1.2rem 0;
-}
-.try {
-  background: #e8f5e9;
-  border-left: 4px solid var(--success);
-  padding: 1rem 1.2rem;
-  border-radius: 0 8px 8px 0;
-  margin: 1rem 0;
-}
-@media (prefers-color-scheme: dark) {
-  .try { background: #1a3a1a; }
-}
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.4rem; margin: 1.2rem 0; }
+.try { background: #e8f5e9; border-left: 4px solid var(--success); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+@media (prefers-color-scheme: dark) { .try { background: #1a3a1a; } }
 .try strong { color: var(--success); }
-pre, code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  background: var(--code-bg);
-  border-radius: 6px;
-}
-pre {
-  padding: 1rem;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
-  border: 1px solid var(--border);
-}
+pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--code-bg); border-radius: 6px; }
+pre { padding: 1rem; overflow-x: auto; white-space: pre-wrap; word-break: break-word; border: 1px solid var(--border); }
 code { padding: 0.15em 0.35em; font-size: 0.92em; }
-.copy-btn {
-  float: right;
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 0.3rem 0.7rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.85rem;
-}
+.copy-btn { float: right; background: var(--accent); color: white; border: none; padding: 0.3rem 0.7rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
 .copy-btn:hover { background: var(--accent-hover); }
 ul, ol { padding-left: 1.4rem; }
 li { margin: 0.4rem 0; }
 a { color: var(--accent); }
 @media (max-width: 900px) {
   .layout { flex-direction: column; }
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+  .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); }
   .main { padding: 1.5rem 1rem 3rem; }
 }
 </style>
@@ -146,127 +92,212 @@ a { color: var(--accent); }
   <nav class="sidebar">
     <h2>目录</h2>
     <a href="#intro">前言</a>
-    <a href="#what">什么是 Grok Bot</a>
-    <a href="#lab1">实操 1：创建并测试记忆</a>
-    <a href="#lab2">实操 2：设置简单例程</a>
-    <a href="#lab3">实操 3：搜索与分配任务</a>
-    <a href="#lab4">实操 4：电脑操作任务</a>
-    <a href="#lab5">实操 5：修改与停止例程</a>
-    <a href="#lab6">实操 6：邮件日历集成</a>
-    <a href="#lab7">实操 7：排查常见问题</a>
-    <a href="#advanced">进阶技巧</a>
+    <a href="#principle">核心原理</a>
+    <a href="#when">何时使用 Bot</a>
+    <a href="#memory">记忆机制</a>
+    <a href="#routine">例程机制</a>
+    <a href="#env">执行环境</a>
+    <a href="#flow">正确交互流程</a>
+    <a href="#cases">实操案例</a>
+    <a href="#lab1">案例 1：创建与记忆</a>
+    <a href="#lab2">案例 2：设置例程</a>
+    <a href="#lab3">案例 3：搜索与分配</a>
+    <a href="#lab4">案例 4：电脑操作</a>
+    <a href="#lab5">案例 5：修改例程</a>
+    <a href="#lab6">案例 6：服务集成</a>
+    <a href="#tips">进阶与排查</a>
     <a href="#summary">总结</a>
   </nav>
   <main>
     <header>
-      <h1>Grok Bot 实操指南</h1>
-      <p class="subtitle">从入门到深入 · 边学边测 · 适合手机阅读</p>
+      <h1>Grok Bot 使用指南</h1>
+      <p class="subtitle">先懂原理 · 再做实操 · 从入门到深入</p>
     </header>
 
     <section id="intro">
       <h2>前言</h2>
-      <p>这本指南把原来的理论内容改成了<strong>可直接复制测试</strong>的实操案例。每个「试试这个」框里的提示，你都可以直接发给 Grok，马上看到效果。</p>
-      <p>核心原则只有四条：<strong>先搜索现有 Bot → 异步发送 → 持续等待结果 → 把长期任务写成例程</strong>。</p>
+      <p>本指南分为两部分：<strong>原理篇</strong>帮助你理解 Grok Bot 的工作方式，<strong>实操篇</strong>提供可直接复制测试的案例。建议先读完原理，再动手验证。</p>
+      <p>核心只有四件事：先搜索现有 Bot、异步发送任务、持续等待结果、把长期重复的工作写成例程。</p>
     </section>
 
-    <section id="what">
-      <h2>什么是 Grok Bot</h2>
+    <section id="principle">
+      <h2>核心原理</h2>
       <div class="card">
-        <p>Grok Bot 是长期存在的代理。它有自己的记忆，能跨对话记住信息，并且可以保存「例程」（定时或事件触发的自动任务）。所有 Bot 共享一台属于你的云电脑，能操作你的文件、浏览器登录状态，以及已连接的服务（邮件、日历、GitHub 等）。</p>
-        <p>适合：需要重复执行、在你离开时仍要运行、或需要记住长期偏好的工作。<br>
-        不适合：一次性问答，直接对话即可。</p>
+        <h3>什么是 Grok Bot</h3>
+        <p>Grok Bot 是长期存在的智能代理。它不同于普通单次对话，具备以下特点：</p>
+        <ul>
+          <li>有独立记忆，能跨对话保留信息</li>
+          <li>可以保存「例程」（定时或事件触发的自动任务）</li>
+          <li>所有 Bot 共享一台属于你的云电脑</li>
+          <li>能操作你的本地文件、已登录的浏览器，以及已连接的外部服务</li>
+        </ul>
       </div>
+    </section>
+
+    <section id="when">
+      <h2>何时使用 Bot</h2>
+      <div class="card">
+        <p><strong>适合交给 Bot：</strong></p>
+        <ul>
+          <li>需要每天/定期重复执行的检查与摘要</li>
+          <li>需要在你离开后继续运行的任务</li>
+          <li>需要记住长期偏好、项目状态或历史决策</li>
+          <li>涉及你电脑上的文件、程序或浏览器登录状态</li>
+          <li>跨多个服务的工作流（邮件 → 表格、日历 → 提醒等）</li>
+        </ul>
+        <p><strong>不适合用 Bot：</strong></p>
+        <ul>
+          <li>一次性问答</li>
+          <li>临时生成内容</li>
+          <li>不需要记忆和后台运行的简单查询</li>
+        </ul>
+        <p>判断标准：如果这件事需要「记住上次的情况」或「在我离开后继续做」，就考虑 Bot；否则直接对话即可。</p>
+      </div>
+    </section>
+
+    <section id="memory">
+      <h2>记忆机制</h2>
+      <div class="card">
+        <p>每个 Bot 都有独立的长期记忆。它会记住：</p>
+        <ul>
+          <li>你明确要求它记住的事实</li>
+          <li>对话中的关键决定和偏好</li>
+          <li>已完成任务的状态</li>
+        </ul>
+        <p>记忆不是无限的，重要信息应明确告知。不要让 Bot 记忆密码、API 密钥等敏感凭证，这些应通过官方连接器处理。</p>
+        <p>当事实发生变化时，要主动告诉 Bot 更新，而不是假设它会自动感知。</p>
+      </div>
+    </section>
+
+    <section id="routine">
+      <h2>例程机制</h2>
+      <div class="card">
+        <p>例程由两部分组成：</p>
+        <ul>
+          <li><strong>提示（Prompt）</strong>：具体要做什么</li>
+          <li><strong>触发条件</strong>：何时执行（时间或事件）</li>
+        </ul>
+        <p>时间触发示例：「每天早上 8 点」。<br>事件触发示例：「当 GitHub 有新 Pull Request 时」。</p>
+        <p>好的例程提示必须自包含，包含：数据来源、处理逻辑、输出格式、异常时如何处理。因为例程执行时你不在旁边解释。</p>
+        <p>设置时要明确告诉 Bot「请保存这个例程」，并给出完整提示。</p>
+      </div>
+    </section>
+
+    <section id="env">
+      <h2>执行环境</h2>
+      <div class="card">
+        <p>Bot 运行在<strong>你的云电脑</strong>上，而不是我自己的工作区。</p>
+        <ul>
+          <li>它可以访问你的桌面、下载、文档等本地文件夹</li>
+          <li>可以运行你已安装的程序</li>
+          <li>可以使用已登录的浏览器会话</li>
+        </ul>
+        <p>因此，「整理下载文件夹」「读取我电脑上的文件」「填写已登录网站的表单」这类请求，必须交给 Bot。</p>
+        <p>服务连接也有区别：一次性操作如果我已连接可以直接处理；重复性任务或只有 Bot 持有的连接，应交给 Bot。同一任务不要同时走两条路径。</p>
+      </div>
+    </section>
+
+    <section id="flow">
+      <h2>正确交互流程</h2>
+      <div class="card">
+        <ol>
+          <li><strong>先搜索</strong>：分配任务前先搜索现有 Bot，避免重复创建</li>
+          <li><strong>异步发送</strong>：必须使用异步模式发送任务，获得句柄</li>
+          <li><strong>持续等待</strong>：用句柄等待最终结果，不要只看确认回复就停止</li>
+          <li><strong>明确例程</strong>：长期任务要明确要求保存例程，并写清触发条件和完整提示</li>
+        </ol>
+        <p>如果多个 Bot 都可能承担一项持续性职责，应先询问你的选择，而不是自行决定。</p>
+      </div>
+    </section>
+
+    <section id="cases">
+      <h2>实操案例</h2>
+      <p>以下案例可直接复制发给 Grok 测试。建议按顺序做，每个大约 1-2 分钟。</p>
     </section>
 
     <section id="lab1">
-      <h2>实操 1：创建并测试记忆</h2>
-      <p>目标：创建一个简单 Bot，并验证它能记住信息。</p>
+      <h2>案例 1：创建并测试记忆</h2>
+      <p>目标：验证 Bot 能记住信息。</p>
       <div class="try">
-        <strong>试试这个（复制发给 Grok）：</strong>
+        <strong>第一步：</strong>
         <pre>请创建一个新的 Bot，名称叫「测试助手」，描述是「用于练习记忆功能的 Bot」。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
       </div>
-      <p>创建后等待它初始化完成，然后继续：</p>
       <div class="try">
         <strong>第二步：</strong>
         <pre>请让「测试助手」记住：我的测试关键词是「香港公司」，以后只要提到这个词就提醒我它记住了。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
       </div>
-      <p>过一会儿再问它：「你记得我的测试关键词是什么吗？」观察是否正确回答。</p>
+      <p>之后再问：「你记得我的测试关键词是什么吗？」观察是否正确。</p>
     </section>
 
     <section id="lab2">
-      <h2>实操 2：设置一个简单例程</h2>
-      <p>目标：体验「在你离开时自动执行」。</p>
+      <h2>案例 2：设置简单例程</h2>
       <div class="try">
         <strong>试试这个：</strong>
         <pre>请让「测试助手」保存一个例程：每天早上 8 点，检查是否有新消息，如果没有就回复「今日无新消息」。把这个例程保存下来。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
       </div>
-      <p>设置成功后，你可以问：「现在有哪些例程？」确认已保存。</p>
+      <p>设置后问：「现在有哪些例程？」确认已保存。</p>
     </section>
 
     <section id="lab3">
-      <h2>实操 3：搜索现有 Bot 并正确分配</h2>
-      <p>目标：养成先搜索再创建的习惯。</p>
+      <h2>案例 3：搜索现有 Bot 并分配</h2>
       <div class="try">
         <strong>试试这个：</strong>
         <pre>请搜索现有的 Bot，看看有没有适合做「每日摘要」的。如果有，告诉我候选；如果没有，再建议是否需要新建。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
       </div>
-      <p>观察系统是否先搜索，而不是直接创建新的。</p>
+      <p>观察是否先搜索，而不是直接创建。</p>
     </section>
 
     <section id="lab4">
-      <h2>实操 4：涉及你电脑的操作</h2>
-      <p>目标：理解 Bot 使用的是你的电脑环境。</p>
+      <h2>案例 4：电脑操作任务</h2>
       <div class="try">
-        <strong>试试这个（安全测试）：</strong>
+        <strong>安全测试：</strong>
         <pre>请让拥有电脑的 Bot 列出我下载文件夹里最近 5 个文件的名称（如果有的话）。不要修改任何文件。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
       </div>
-      <p>如果返回了真实文件名，说明它确实在你的电脑上操作。</p>
+      <p>如果返回真实文件名，说明它确实在你的电脑上操作。</p>
     </section>
 
     <section id="lab5">
-      <h2>实操 5：修改与停止例程</h2>
+      <h2>案例 5：修改与停止例程</h2>
       <div class="try">
         <strong>试试这个：</strong>
         <pre>请让「测试助手」把之前的每日例程改成「每天晚上 9 点执行」，并确认已更新。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
       </div>
-      <p>然后再说「请删除这个例程」，观察是否成功。</p>
+      <p>然后再说「请删除这个例程」，观察结果。</p>
     </section>
 
     <section id="lab6">
-      <h2>实操 6：邮件 / 日历集成（需已连接）</h2>
-      <p>前提：你的 Gmail 或日历已连接到系统。</p>
+      <h2>案例 6：邮件 / 日历集成</h2>
+      <p>前提：相关服务已连接。</p>
       <div class="try">
         <strong>试试这个：</strong>
         <pre>请搜索是否已有邮件相关 Bot。如果有，让它生成今天未读邮件的简短摘要（最多 5 封）。如果没有连接，请告诉我需要授权什么。<button class="copy-btn" onclick="copyText(this)">复制</button></pre>
       </div>
     </section>
 
-    <section id="lab7">
-      <h2>实操 7：排查常见问题</h2>
+    <section id="tips">
+      <h2>进阶技巧与排查</h2>
       <div class="card">
+        <h3>常见问题</h3>
         <ul>
-          <li>任务没结果 → 确认是否使用了异步模式，并且持续等待到最终回复。</li>
-          <li>Bot 说没权限 → 检查对应服务是否已连接。</li>
-          <li>例程没运行 → 问 Bot「列出我的例程」，确认触发条件是否正确。</li>
-          <li>重复创建了 Bot → 下次先说「先搜索现有的」。</li>
+          <li>任务没结果 → 确认使用了异步模式，并持续等待到最终回复</li>
+          <li>Bot 说没权限 → 检查对应服务是否已连接</li>
+          <li>例程没运行 → 问 Bot「列出我的例程」，确认触发条件</li>
+          <li>重复创建了 Bot → 下次先说「先搜索现有的」</li>
+        </ul>
+        <h3>进阶建议</h3>
+        <ul>
+          <li>例程提示要写得自包含</li>
+          <li>复杂流程拆成多个小例程</li>
+          <li>定期清理不再需要的例程</li>
+          <li>重要操作始终保留人工最终确认</li>
         </ul>
       </div>
     </section>
 
-    <section id="advanced">
-      <h2>进阶技巧</h2>
-      <ul>
-        <li>例程提示要写得自包含，包含输入来源、处理逻辑、输出格式、异常时怎么办。</li>
-        <li>复杂任务拆成多个小例程，比一个大例程更稳定。</li>
-        <li>定期让 Bot 列出当前例程和记忆的关键信息，做一次清理。</li>
-        <li>财务、重要操作始终保留人工最终确认。</li>
-      </ul>
-    </section>
-
     <section id="summary">
       <h2>总结</h2>
-      <p>从实操 1 开始逐个测试，每个案例大约 1-2 分钟就能验证。完成后你对「搜索 → 异步 → 等待 → 例程」这条主线会非常熟悉。</p>
-      <p>如果某个案例在你这边跑不通，把 Grok 的完整回复贴回来，我可以帮你看具体卡在哪一步。</p>
+      <p>先理解原理（记忆、例程、执行环境、交互流程），再通过案例验证。完成后，你对「搜索 → 异步 → 等待 → 例程」这条主线会非常熟悉。</p>
+      <p>遇到具体问题时，把 Grok 的完整回复发回来，我可以帮你定位卡点。</p>
     </section>
   </main>
 </div>
@@ -280,7 +311,6 @@ function copyText(btn) {
     setTimeout(() => btn.textContent = '复制', 1500);
   });
 }
-// 简单高亮当前章节
 const links = document.querySelectorAll('.sidebar a');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
