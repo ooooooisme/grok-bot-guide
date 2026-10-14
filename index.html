@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grok Bot 深度使用指南</title>
+<title>Grok Bot 中文指南</title>
 <style>
 :root {
   --bg: #ffffff;
@@ -176,104 +176,141 @@ a:hover { text-decoration: underline; }
   <nav class="sidebar">
     <h2>目录</h2>
     <a href="#intro">前言</a>
+    <a href="#starthere">从这里开始</a>
     <a href="#principle">核心原则</a>
-    <a href="#capabilities">能力层：连接器与 Skills</a>
-    <a href="#routine">自动化：例程</a>
-    <a href="#flow">交互与验证流程</a>
-    <a href="#advanced">进阶协作模式</a>
-    <a href="#casestudy">社区与模板案例</a>
+    <a href="#basics">Bot 基础与区别</a>
+    <a href="#capabilities">连接器、插件与 Skills</a>
+    <a href="#safety">安全运行与审批</a>
+    <a href="#brief">任务简报写法</a>
+    <a href="#routine">例程与自动化</a>
+    <a href="#templates">模板与社区模式</a>
     <a href="#cases">实操测试</a>
-    <a href="#multisource">资料来源</a>
+    <a href="#sources">来源说明</a>
     <a href="#summary">总结</a>
   </nav>
   <main>
     <header>
-      <h1>Grok Bot 深度使用指南</h1>
-      <p class="subtitle">Give a Bot the job · 融会 learngrok.dev 与 grokbot.dev 的实践</p>
+      <h1>Grok Bot 中文指南</h1>
+      <p class="subtitle">融会 learngrok.dev 与 grokbot.dev · 从入门到安全使用</p>
     </header>
 
     <section id="intro">
       <h2>前言</h2>
-      <p>learngrok.dev 强调「把工作交给 Bot，而不是反复提问」，并按 Guides / Prompts / Workflows / Fixes 组织内容。grokbot.dev 则把大量可直接安装的 Bot 模板按岗位和场景分类，让人从「Start Here」快速进入实用状态。</p>
-      <p>本指南把两者融会：既保留清晰的原则与步骤，也提供可直接测试的复杂场景，并吸收社区模板里反复出现的安全与审批习惯。</p>
+      <p>learngrok.dev 把内容组织成 Guides、Prompts、Workflows、Fixes，强调「把工作交给 Bot，而不是反复提问」。grokbot.dev 则提供大量可直接安装的 Bot 模板和 Collections，按岗位和场景分类，并有「Start Here」入门合集。</p>
+      <p>本站把两者的核心内容整理成中文，方便直接阅读和使用。重点包括：入门路径、核心原则、安全连接、任务简报写法、例程机制，以及社区模板中反复出现的模式。</p>
+    </section>
+
+    <section id="starthere">
+      <h2>从这里开始</h2>
+      <div class="card">
+        <h3>grokbot.dev 的 Start Here 思路</h3>
+        <p>该合集针对「第一小时最难」设计了 5 个 Bot：</p>
+        <ol>
+          <li>引导式第一小时：让新手看到 Bot 实际能做什么。</li>
+          <li>五分钟入门 Bot：问几个问题后生成匹配的起步 Bot，并提示连接工具。</li>
+          <li>Bot 构建器：回答少量问题后生成结构完整的 Bot。</li>
+          <li>审计与调优 Bot：从具体工作出发，检查并优化已有 Bot。</li>
+          <li>安装前审查 Bot：在把别人分享的 Bot 加入账号前先检查，避免直接信任。</li>
+        </ol>
+        <p>实际可借鉴的顺序：先用一个简单引导理解能力 → 快速生成起步 Bot → 用审计 Bot 检查 → 安装任何外部模板前先审查。</p>
+      </div>
+      <div class="card">
+        <h3>learngrok.dev 的起步项目</h3>
+        <p>他们建议从有明确产出的小项目开始：做一个会跑的 Bot、把一个重复任务变成命令、或完成一个可验证的工作流。每个都强调「最后有东西真正运行」。</p>
+      </div>
     </section>
 
     <section id="principle">
       <h2>核心原则</h2>
       <div class="card">
         <h3>Give a Bot the job, not the question</h3>
-        <p>这是 learngrok.dev 最核心的表述。普通对话是问答，Bot 是交办工作。一个清晰的岗位描述（职责、数据来源、输出格式、审批边界）比临时提示更重要，也更容易长期维护。</p>
-        <p>把长期有效的规则写进 Bot 描述，而不是只放在聊天记录里。聊天会变长，描述是相对稳定的锚点。</p>
+        <p>这是 learngrok.dev 最核心的表述。普通对话是问答，Bot 是交办工作。清晰的岗位描述（职责、数据来源、输出格式、审批边界）比临时提示更重要。</p>
+        <p>把长期规则写进 Bot 描述，而不是只放在聊天里。</p>
       </div>
       <div class="card">
         <h3>一个 Bot 一个岗位</h3>
-        <p>grokbot.dev 上大量模板都遵循这个原则。职责越单一，记忆越干净，例程越容易管理。先搜索现有 Bot，优先复用或调整，而不是重复创建。</p>
+        <p>grokbot.dev 上大量模板都遵循这个原则。职责越单一，记忆越干净，例程越容易管理。先搜索现有 Bot，优先复用。</p>
       </div>
       <div class="card">
         <h3>先验证再固化再自动化</h3>
-        <p>两个站点的实践都指向同一顺序：先在对话里把流程做对 → 保存为 Skill（补充边界与校验）→ 在安全输入上测试 → 稳定后再挂例程。未验证的流程直接自动化，是最常见的失败原因。</p>
+        <p>两个站点的实践都指向同一顺序：先在对话里把流程做对 → 保存为 Skill 并补充边界 → 在安全输入上测试 → 稳定后再挂例程。</p>
+      </div>
+    </section>
+
+    <section id="basics">
+      <h2>Bot 基础与区别</h2>
+      <div class="card">
+        <h3>Bot 与普通对话的区别</h3>
+        <p>learngrok.dev 明确指出：Bot 是有电脑的代理。所有 Bot 共享一台云电脑（浏览器、文件系统、终端）。登录会话可跨任务保留。工作可以在你关闭设备后继续。</p>
+        <p>这解释了大部分能力和限制：它能操作已登录的网站和文件，但所有 Bot 共享同一套登录状态，因此连接工具时要考虑范围。</p>
+      </div>
+      <div class="card">
+        <h3>如何获得 Grok Bot</h3>
+        <p>通过 Cursor 购买和下载，而不是直接从 x.ai。具体计划是否包含、平台是否有构建版本、以及账号设置是否阻止使用，都需要确认。官方文档是最终依据。</p>
       </div>
     </section>
 
     <section id="capabilities">
-      <h2>能力层：连接器与 Skills</h2>
+      <h2>连接器、插件与 Skills</h2>
       <div class="card">
         <h3>连接器优先</h3>
-        <p>在「Connect apps」添加，一次登录后账号内所有 Bot 可用。优先使用连接器，比纯浏览器点击更稳定。用 <code>@</code> 引用连接器，用 <code>/</code> 引用 Skill。没有连接器的服务仍可通过共享电脑的浏览器操作。</p>
+        <p>在「Connect apps」添加，一次登录后账号内所有 Bot 可用。优先使用连接器，比纯浏览器点击更稳定。用 <code>@</code> 引用连接器，用 <code>/</code> 引用 Skill。</p>
+        <p>learngrok.dev 强调：所有 Bot 共享一台电脑和一套登录。这决定了你应该如何连接任何东西。</p>
       </div>
       <div class="card">
-        <h3>Skill 的完整结构</h3>
-        <p>一个可用的 Skill 应写明：何时使用、需要哪些输入与权限、步骤、如何验证结果、输出格式、哪些动作必须审批。这是 learngrok.dev 类指南和社区模板里反复出现的要素。</p>
-        <p>Teach a Task 可生成草稿，但必须手动补充决策规则、失败处理和审批边界，并在测试输入上验证。</p>
+        <h3>Skill 与 Teach a Task</h3>
+        <p>Skill 应包含：何时使用、输入与权限、步骤、如何验证、输出格式、哪些动作必须审批。Teach a Task 可生成草稿，但必须手动补充规则、失败处理和审批边界，并在测试输入上验证。</p>
+      </div>
+    </section>
+
+    <section id="safety">
+      <h2>安全运行与审批</h2>
+      <div class="card">
+        <h3>什么会让 Bot 停下，什么不会</h3>
+        <p>learngrok.dev 指出：没有固定的「必须审批」动作列表。有三套机制决定是否暂停。人们最容易误读的是「always allow」规则。发送、支付、删除、发布、改生产等动作，应在 Skill 和例程里明确要求停下来确认。</p>
+      </div>
+      <div class="card">
+        <h3>安全连接工具</h3>
+        <p>因为所有 Bot 共享同一台电脑和登录状态，连接时要考虑最小权限。安装别人分享的 Bot 前，先审查其描述和权限要求，而不是直接信任。</p>
+      </div>
+      <div class="card">
+        <h3>常见故障方向</h3>
+        <p>learngrok.dev 的 Fixes 类别包括：网站反复要求登录、Bot 卡住等待或未经询问就行动、电脑不可达、插件安装或认证失败、定时例程未运行等。遇到问题时先检查连接状态、审批设置和例程记录。</p>
+      </div>
+    </section>
+
+    <section id="brief">
+      <h2>任务简报写法</h2>
+      <div class="card">
+        <p>learngrok.dev 提供了任务简报模板思路。一个好的简报应包含：</p>
+        <ul>
+          <li><strong>范围</strong>：要完成什么</li>
+          <li><strong>输入</strong>：数据从哪里来</li>
+          <li><strong>边界</strong>：什么不能做，什么必须停下来确认</li>
+          <li><strong>完成定义</strong>：返回什么格式，如何验证</li>
+        </ul>
+        <p>示例结构：目标 + 来源 + 限制 + 交付物 + 确认节点。这在国内中文教程中也有类似表述。</p>
       </div>
     </section>
 
     <section id="routine">
-      <h2>自动化：例程</h2>
+      <h2>例程与自动化</h2>
       <div class="card">
-        <p>例程 = 负责的 Bot + 触发条件 + 已验证的流程。提示必须自包含：数据来源、处理逻辑、输出格式、无数据或失败时怎么办、哪些动作必须停下来确认。</p>
-        <p>限制参考：单 Bot 最多约 50 个例程；间隔至少 5 分钟；保留最近约 20 条记录；删除不可恢复。隐藏 Bot 不会停止例程。先用 Test run 验证，再正式启用。高频例程会快速消耗用量。</p>
+        <p>例程 = 负责的 Bot + 触发条件 + 已验证的流程。提示必须自包含。限制参考：单 Bot 最多约 50 个；间隔至少 5 分钟；保留最近约 20 条记录；删除不可恢复。隐藏 Bot 不会停止例程。</p>
+        <p>先用 Test run 验证，再正式启用。高频会快速消耗用量。定期审计哪些还在产生价值。</p>
       </div>
     </section>
 
-    <section id="flow">
-      <h2>交互与验证流程</h2>
+    <section id="templates">
+      <h2>模板与社区模式</h2>
       <div class="card">
-        <ol>
-          <li>先搜索现有 Bot，避免重复创建。</li>
-          <li>异步发送并持续等待最终结果。</li>
-          <li>流程验证通过后保存为 Skill，并补充边界。</li>
-          <li>需要自动化时再创建例程，写清失败处理与审批。</li>
-          <li>多个 Bot 可能承担同一职责时，先列出候选让你选择。</li>
-        </ol>
-      </div>
-    </section>
-
-    <section id="advanced">
-      <h2>进阶协作模式</h2>
-      <div class="card">
-        <h3>Chief of Staff 作为唯一入口</h3>
-        <p>日常只和总控对话。描述里写明「先检查专家再决定自己做还是转交」。每周短回顾：学到了什么、被纠正过两次的地方、哪些例程该关。这是 grokbot.dev 上大量「orchestrator」类模板的共同模式。</p>
+        <h3>grokbot.dev 的模板风格</h3>
+        <p>大量模板用一句话描述岗位，例如「Opens the weekday with a brief and hands work to your bots」，并带上 tags（scheduled、agent team、productivity、personal）。可直接作为描述起点，再按自己的约束调整。</p>
+        <p>常见分类包括：Chief of Staff & orchestrators、个人效率、财务监控、内容创作、工程与研究等。</p>
       </div>
       <div class="card">
-        <h3>四要素与安全边界</h3>
-        <p>Context、Connections、Capabilities、Cadence 缺一不可。发送、支付、删除、发布、改生产必须停下来确认。learngrok.dev 专门有「Running Bots safely」一类内容，强调审批与故障处理。</p>
-      </div>
-    </section>
-
-    <section id="casestudy">
-      <h2>社区与模板案例</h2>
-      <div class="card">
-        <h3>一人公司多 Agent</h3>
-        <p>先建 Chief of Staff，再按角色逐步添加专家。每个重复任务单独绑定例程。工具逐步连接。</p>
-      </div>
-      <div class="card">
-        <h3>产品 Swarm 与小红书工作流</h3>
-        <p>多个岗位 Bot + 共享协作规则。研究例程设「无变化则停止」。国内实践强调「源文从我来、数字从报告来、发布我点」三道硬门，只对总助说话。</p>
-      </div>
-      <div class="card">
-        <h3>grokbot.dev 模板风格</h3>
-        <p>大量模板用一句话描述岗位（例如「Opens the weekday with a brief and hands work to your bots」），并带上 tags（scheduled、agent team、productivity）。可直接作为描述起点，再按自己的约束调整。</p>
+        <h3>社区共同模式</h3>
+        <p>一个 Bot 一个岗位、总控作为唯一入口、先验证再自动化、写操作必须审批、例程要有失败处理和退出条件、定期审计。国内小红书工作流也强调「源文从我来、数字从报告来、发布我点」三道硬门。</p>
       </div>
     </section>
 
@@ -293,19 +330,22 @@ a:hover { text-decoration: underline; }
       </div>
     </section>
 
-    <section id="multisource">
-      <h2>资料来源</h2>
+    <section id="sources">
+      <h2>来源说明</h2>
       <div class="card">
-        <p><strong>learngrok.dev</strong>：结构化 Guides / Prompts / Workflows / Fixes，强调「Give a Bot the job」和安全运行。</p>
-        <p><strong>grokbot.dev</strong>：大量可安装 Bot 模板与 Collections，按岗位和场景分类，提供「Start Here」式入门路径。</p>
-        <p><strong>GitHub Awesome 列表</strong>、Reddit r/GrokBot、YouTube 官方工作坊与课程、国内小红书工作流拆解。</p>
-        <p>跨来源共同点：一个岗位一个 Bot、总控入口、先验证再自动化、写操作必须审批、定期审计。</p>
+        <p>本站内容主要整理自：</p>
+        <ul>
+          <li>learngrok.dev：Guides / Prompts / Workflows / Fixes 结构，尤其是 Grok Bot basics 与 Running Bots safely 部分。</li>
+          <li>grokbot.dev：Start Here 合集、Marketplace 模板分类与描述风格。</li>
+          <li>官方文档（docs.x.ai/grok-bot）与社区实践（GitHub Awesome 列表、Reddit、国内工作流拆解）。</li>
+        </ul>
+        <p>内容为中文整理与适配，便于阅读。具体操作以官方最新文档和实际界面为准。</p>
       </div>
     </section>
 
     <section id="summary">
       <h2>总结</h2>
-      <p>把工作交给有清晰岗位的 Bot，而不是反复提问。先建立可靠的能力层（连接器 + Skill），再自动化。用复杂测试验证边界是否被遵守。遇到具体问题把完整回复发回来即可继续调整。</p>
+      <p>把工作交给有清晰岗位的 Bot，而不是反复提问。先建立可靠的能力层（连接器 + Skill），注意共享电脑带来的权限范围，再通过例程自动化。用测试验证边界是否被遵守。遇到具体问题把完整回复发回来即可继续调整。</p>
     </section>
   </main>
 </div>
